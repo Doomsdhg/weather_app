@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/components/city_card.dart';
+import 'package:weather_app/components/city_adding_dialog.dart';
 
 class MainPage extends StatelessWidget {
 
@@ -19,10 +20,10 @@ class MainPage extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
+        onPressed: () => CityAddingDialog().build(context),
         tooltip: 'Add city',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 
