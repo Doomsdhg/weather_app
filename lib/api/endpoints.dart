@@ -17,7 +17,7 @@ class Endpoints {
     return Uri.parse('$_currentWeatherBaseUrl$apiKey&q=$city&aqi=no');
   }
 
-  static Uri getCitiesList(String query) async {
+  static Future<Uri> getCitiesList(String query) async {
     String apiKey = await _getApiKey();
     return Uri.parse('$_searchBaseUrl$apiKey&q=$query');
   }

@@ -7,13 +7,13 @@ import 'package:weather_app/constants/constants.dart';
 class WeatherApi extends WebService {
 
   Future getCurrentWeather(String city) async {
-    final response = await _makeGetRequest(Endpoints.getCurrentWeather(city));
+    final response = await _makeGetRequest(await Endpoints.getCurrentWeather(city));
     return json.decode(response.body);
   }
 
   Future findCities(String query) async {
-    final http.Response response = await _makeGetRequest(Endpoints.getCitiesList(query));
-    List<dynamic> citiesList = await json.decode(response.body);
+    final http.Response response = await _makeGetRequest(await Endpoints.getCitiesList(query));
+    final citiesList = await json.decode(response.body);
     return _getCitiesNamesList(citiesList, query);
   }
 
