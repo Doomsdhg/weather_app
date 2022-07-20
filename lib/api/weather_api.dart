@@ -4,7 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:weather_app/constants/constants.dart';
 
-class WeatherApi {
+class WeatherApi extends WebService {
 
   Future getCurrentWeather(String city) async {
     final response = await _makeGetRequest(Endpoints.getCurrentWeather(city));
@@ -25,10 +25,6 @@ class WeatherApi {
     return List<String>.generate(citiesList.length, (index) => citiesList.elementAt(index)[CityObjectAccessors.NAME]);
   }
 
-  Future _makeGetRequest(Uri url) async {
-    return await http.get(url);
-  }
-
   List<dynamic> _filterCities(List<dynamic> citiesList, String query){
     return citiesList.where((element) {
       return element[CityObjectAccessors.NAME].toString().toLowerCase().contains(query.toLowerCase());
@@ -36,3 +32,8 @@ class WeatherApi {
   }
 }
 
+abstract class WebService {
+  Future _makeGetRequest(Uri url) async {
+    return await http.get(url);
+  }
+}

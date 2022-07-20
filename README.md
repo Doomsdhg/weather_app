@@ -4,13 +4,6 @@ An app that displays weather
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+You can use this application to get information about weather in any city all over the world.
+Add cities to the main page to observe current weather right in the list.
+To see extended information about weather in any of added cities, simply tap on the city.
