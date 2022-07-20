@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/components/city_card.dart';
-import 'package:weather_app/components/city_adding_dialog.dart';
+import 'package:weather_app/components/city_management_dialog.dart';
 
 class MainPage extends StatelessWidget {
 
@@ -20,7 +20,7 @@ class MainPage extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => CityAddingDialog().build(context),
+        onPressed: () => CityManagementDialog().build(context),
         tooltip: 'Add city',
         child: const Icon(Icons.add),
       ),

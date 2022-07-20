@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/api/weather_api.dart';
 
-class CityAddingDialog {
+class CityManagementDialog {
 
   Future build(BuildContext context) {
     return showDialog<String>(
