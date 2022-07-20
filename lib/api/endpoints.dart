@@ -2,7 +2,7 @@ import 'package:weather_app/api/crypting_manager.dart';
 
 class Endpoints {
 
-  static String _baseUrl = 'https://api.weatherapi.com/v1/current.json?key=';
+  static String _baseUrl = 'https://api.weatherapi.com/v1/';
 
   static String _currentWeatherBaseUrl = '$_baseUrl' + 'current.json?key=';
 
