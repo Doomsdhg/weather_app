@@ -6,17 +6,17 @@ import 'package:weather_app/constants/constants.dart';
 
 class CryptingManager {
   Future<String> getApiKey() async {
-    final apiKeyObject = await getApiKeyData();
-    return getDecryptedApiKey(apiKeyObject);
+    final apiKeyObject = await _getApiKeyData();
+    return _getDecryptedApiKey(apiKeyObject);
   }
 
-  Future getApiKeyData() async {
+  Future _getApiKeyData() async {
     final response = await rootBundle.loadString(AssetsPaths.API_KEY);
     final apiKeyObject = await json.decode(response);
     return apiKeyObject;
   }
 
-  String getDecryptedApiKey(dynamic apiKeyObject) {
+  String _getDecryptedApiKey(dynamic apiKeyObject) {
     final encryptedApiKey = Encrypted.fromBase64(apiKeyObject[ApiKeyObjectAccessors.ENCRYPTED_API_KEY]);
     final key = Key.fromUtf8(apiKeyObject[ApiKeyObjectAccessors.SECRET_KEY]);
     final encrypter = Encrypter(AES(key, mode: AESMode.cbc));

@@ -7,3 +7,7 @@ class ApiKeyObjectAccessors {
   static String ENCRYPTED_API_KEY = "encryptedApiKey";
   static String INITIAL_VECTOR = "iv";
 }
+
+class CityObjectAccessors {
+  static String NAME = "name";
+}
