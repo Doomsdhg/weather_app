@@ -1,10 +1,15 @@
+import 'package:weather_app/api/crypting_manager.dart';
+
 class Endpoints {
 
   static String _baseUrl = 'https://api.weatherapi.com/v1/current.json?key=';
 
-  static String _apiKey = '403731c81f42492286f114115221807';
+  static Future<String> _getApiKey() async {
+    return await CryptingManager().getApiKey();
+  }
 
-  static Uri getCurrentWeather(String city){
-    return Uri.parse('$_baseUrl$_apiKey&q=$city&aqi=no');
+  static Future<Uri> getCurrentWeather(String city) async {
+    String apiKey = await _getApiKey();
+    return Uri.parse('$_baseUrl$apiKey&q=$city&aqi=no');
   }
 }

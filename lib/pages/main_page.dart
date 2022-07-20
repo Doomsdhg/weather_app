@@ -22,7 +22,7 @@ class MainPage extends StatelessWidget {
         onPressed: () => {},
         tooltip: 'Add city',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 
