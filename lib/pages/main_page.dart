@@ -2,32 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:weather_app/components/city_card.dart';
 import 'package:weather_app/components/city_management_dialog.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
 
-  const MainPage({Key? key, required this.title}) : super(key: key);
+  @override
+  createState() => _mainPageState();
+}
 
-  final String title;
+class _mainPageState extends State {
+
+  List<String> citiesList = ['Amsterdam', 'Batumi', 'Copengahen'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text('Weather app'),
       ),
       body: Column(
         children: [
-          for(var item in _getCitiesList()) CityCard(item, '+25')
+          for(var item in citiesList) CityCard(item, '+25')
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => CityManagementDialog().build(context),
+        onPressed: () => CityManagementDialog().build(context)
+            .then((value){
+              setState(() {
+                citiesList.add(value);
+              });
+            }),
         tooltip: 'Add city',
         child: const Icon(Icons.add),
       ),
     );
-  }
-
-  List<String> _getCitiesList(){
-    return ['Amsterdam', 'Batumi', 'Copengahen'];
   }
 }
