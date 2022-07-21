@@ -8,7 +8,8 @@ class WeatherApi extends WebService {
 
   Future getCurrentWeather(String city) async {
     final response = await _makeGetRequest(await Endpoints.getCurrentWeather(city));
-    return json.decode(response.body);
+    final decodedBody = await json.decode(response.body);
+    return decodedBody["current"]["temp_c"];
   }
 
   Future findCities(String query) async {
