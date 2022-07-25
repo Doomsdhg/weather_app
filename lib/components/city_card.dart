@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/api/weather_api.dart';
+import 'package:weather_app/screens/city_screen.dart';
 
 class CityCard extends StatefulWidget {
 
@@ -24,34 +25,44 @@ class _CityCardState extends State {
 
   Widget build(BuildContext context){
     _setCurrentTemperature();
-    return Card(
-      child: Container(
-        child: Row(
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                '$name',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context){
+            return CityScreen(name: name);
+          })
+        );
+      },
+      child: Card(
+          child: Container(
+            child: Row(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    '$name',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20
+                    ),
+                  ),
                 ),
-              ),
+                Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      '$temperature°C',
+                      style: TextStyle(
+                          fontSize: 30
+                      ),
+                    )
+                )
+              ],
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
             ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                '$temperature°C',
-                style: TextStyle(
-                    fontSize: 30
-                ),
-              )
-            )
-          ],
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        ),
-        padding: EdgeInsets.all(20),
-      )
+            padding: EdgeInsets.all(20),
+          )
+      ),
     );
   }
 

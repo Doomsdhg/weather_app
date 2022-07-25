@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:weather_app/components/city_card.dart';
 import 'package:weather_app/components/city_management_dialog.dart';
 
-class MainPage extends StatefulWidget {
+class MainScreen extends StatefulWidget {
 
   @override
-  createState() => _mainPageState();
+  createState() => _mainScreenState();
 }
 
-class _mainPageState extends State {
+class _mainScreenState extends State {
 
   List<String> citiesList = ['Amsterdam', 'Batumi'];
 
@@ -16,7 +16,7 @@ class _mainPageState extends State {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Weather app'),
+        title: Text('Home'),
       ),
       body: Column(
         children: [
