@@ -5,7 +5,7 @@ class CityCard extends StatefulWidget {
 
   late String name;
 
-  CityCard(String name){
+  CityCard({required String name}){
     this.name = name;
   }
 
@@ -16,45 +16,49 @@ class CityCard extends StatefulWidget {
 class _CityCardState extends State {
 
   late String name;
-  int? temperature;
+  String temperature = '';
 
   _CityCardState(String name){
     this.name = name;
   }
 
   Widget build(BuildContext context){
-    _getCurrentTemperature();
+    _setCurrentTemperature();
     return Card(
       child: Container(
         child: Row(
           children: [
-            Text(
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
                 '$name',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20
-                ),
-            ),
-            Container(
-              child: Text(
-                  '$temperature°C',
-                  style: TextStyle(
-                    fontSize: 30
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20
                 ),
               ),
-              margin: EdgeInsets.only(left: 20),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                '$temperature°C',
+                style: TextStyle(
+                    fontSize: 30
+                ),
+              )
             )
           ],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
         ),
         padding: EdgeInsets.all(20),
       )
     );
   }
 
-  void _getCurrentTemperature() async {
-    final currentTemperature = await WeatherApi().getCurrentWeather(name);
+  void _setCurrentTemperature() async {
+    final int currentTemperature = await WeatherApi().getCurrentWeather(name);
     setState((){
-      temperature = currentTemperature;
+      temperature = currentTemperature.toString();
     });
   }
 }

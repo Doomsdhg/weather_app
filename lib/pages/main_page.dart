@@ -20,7 +20,7 @@ class _mainPageState extends State {
       ),
       body: Column(
         children: [
-          for(var item in citiesList) CityCard(item)
+          for(var item in citiesList) CityCard(name: item)
         ],
       ),
       floatingActionButton: FloatingActionButton(

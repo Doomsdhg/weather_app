@@ -9,24 +9,30 @@ class WeatherApi extends WebService {
   Future getCurrentWeather(String city) async {
     final response = await _makeGetRequest(await Endpoints.getCurrentWeather(city));
     final decodedBody = await json.decode(response.body);
-    return decodedBody["current"]["temp_c"];
+    return decodedBody[WeatherResponseAccessors.CURRENT][WeatherResponseAccessors.CELCIUS_TEMPERATURE];
   }
 
   Future findCities(String query) async {
     final http.Response response = await _makeGetRequest(await Endpoints.getCitiesList(query));
     final citiesList = await json.decode(response.body);
-    return _getCitiesNamesList(citiesList, query);
+    return _getCitiesNamesList(citiesList: citiesList, query: query);
   }
 
-  List<String> _getCitiesNamesList(List<dynamic> citiesList, String query){
-    citiesList = _filterCities(citiesList, query);
+  List<String> _getCitiesNamesList({
+    required List<dynamic> citiesList,
+    required String query
+  }){
+    citiesList = _filterCities(citiesList: citiesList, query: query);
     if (citiesList.isEmpty) {
       return List<String>.empty();
     }
     return List<String>.generate(citiesList.length, (index) => citiesList.elementAt(index)[CityObjectAccessors.NAME]);
   }
 
-  List<dynamic> _filterCities(List<dynamic> citiesList, String query){
+  List<dynamic> _filterCities({
+    required List<dynamic> citiesList,
+    required String query
+  }){
     return citiesList.where((element) {
       return element[CityObjectAccessors.NAME].toString().toLowerCase().contains(query.toLowerCase());
     }).toList();
