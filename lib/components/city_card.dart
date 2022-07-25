@@ -1,55 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/api/weather_api.dart';
 
 class CityCard extends StatefulWidget {
 
   late String name;
-  late String temperature;
 
-  CityCard(String name, String temperature){
+  CityCard({required String name}){
     this.name = name;
-    this.temperature = temperature;
   }
 
   @override
-  _CityCardState createState() => _CityCardState(this.name, this.temperature);
+  _CityCardState createState() => _CityCardState(this.name);
 }
 
 class _CityCardState extends State {
 
-  String? name;
-  String? temperature;
+  late String name;
+  String temperature = '';
 
-  _CityCardState(String? name, String? temperature){
+  _CityCardState(String name){
     this.name = name;
-    this.temperature = temperature;
   }
 
-  Widget build(BuildContext context) {
-    print(context);
+  Widget build(BuildContext context){
+    _setCurrentTemperature();
     return Card(
       child: Container(
         child: Row(
           children: [
-            Text(
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
                 '$name',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20
-                ),
-            ),
-            Container(
-              child: Text(
-                  '$temperature',
-                  style: TextStyle(
-                    fontSize: 30
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20
                 ),
               ),
-              margin: EdgeInsets.only(left: 20),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                '$temperature°C',
+                style: TextStyle(
+                    fontSize: 30
+                ),
+              )
             )
           ],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
         ),
         padding: EdgeInsets.all(20),
       )
     );
+  }
+
+  void _setCurrentTemperature() async {
+    final int currentTemperature = await WeatherApi().getCurrentWeather(name);
+    setState((){
+      temperature = currentTemperature.toString();
+    });
   }
 }

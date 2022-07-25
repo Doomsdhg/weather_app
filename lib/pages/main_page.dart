@@ -10,7 +10,7 @@ class MainPage extends StatefulWidget {
 
 class _mainPageState extends State {
 
-  List<String> citiesList = ['Amsterdam', 'Batumi', 'Copengahen'];
+  List<String> citiesList = ['Amsterdam', 'Batumi'];
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class _mainPageState extends State {
       ),
       body: Column(
         children: [
-          for(var item in citiesList) CityCard(item, '+25')
+          for(var item in citiesList) CityCard(name: item)
         ],
       ),
       floatingActionButton: FloatingActionButton(

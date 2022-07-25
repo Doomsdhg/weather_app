@@ -11,3 +11,8 @@ class ApiKeyObjectAccessors {
 class CityObjectAccessors {
   static String NAME = "name";
 }
+
+class WeatherResponseAccessors {
+  static String CURRENT = "current";
+  static String CELCIUS_TEMPERATURE = "temp_c";
+}
