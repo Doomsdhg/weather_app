@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/components/current_weather_block.dart';
+import 'package:weather_app/components/forecast_block.dart';
 
 class CityScreen extends StatefulWidget {
-
   late String name;
 
-  CityScreen({required String name}){
+  CityScreen({required String name}) {
     this.name = name;
   }
 
@@ -13,10 +14,9 @@ class CityScreen extends StatefulWidget {
 }
 
 class _cityScreenState extends State {
-
   late String name;
 
-  _cityScreenState({required String name}){
+  _cityScreenState({required String name}) {
     this.name = name;
   }
 
@@ -24,26 +24,22 @@ class _cityScreenState extends State {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('City info'),
+        title: Text('$name weather'),
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Title(
-                color: Colors.black,
-                child: Center(
-                  child: Text(
-                    '$name',
-                    style: TextStyle(
-                        fontSize: 30
-                    ),
-                  ),
-                )
-            )
-          ],
-        ),
-      ),
+          margin: EdgeInsets.all(20),
+          child: FractionallySizedBox(
+            widthFactor: 1,
+            child: ColoredBox(
+              color: Colors.grey.shade200,
+              child: Column(
+                children: [
+                  CurrentWeatherBlock(),
+                  ForecastBlock()
+                ],
+              ),
+            ),
+          )),
     );
   }
 }
