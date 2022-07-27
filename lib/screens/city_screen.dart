@@ -3,28 +3,28 @@ import 'package:weather_app/components/current_weather_block.dart';
 import 'package:weather_app/components/forecast_block.dart';
 
 class CityScreen extends StatefulWidget {
-  late String name;
+  late String cityName;
 
-  CityScreen({required String name}) {
-    this.name = name;
+  CityScreen({required String cityName}) {
+    this.cityName = cityName;
   }
 
   @override
-  createState() => _cityScreenState(name: name);
+  createState() => _cityScreenState(cityName: cityName);
 }
 
 class _cityScreenState extends State {
-  late String name;
+  late String cityName;
 
-  _cityScreenState({required String name}) {
-    this.name = name;
+  _cityScreenState({required String cityName}) {
+    this.cityName = cityName;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('$name weather'),
+        title: Text('$cityName weather'),
       ),
       body: Container(
           margin: EdgeInsets.all(20),
@@ -35,7 +35,7 @@ class _cityScreenState extends State {
               child: Column(
                 children: [
                   CurrentWeatherBlock(),
-                  ForecastBlock()
+                  ForecastBlock(cityName: cityName,)
                 ],
               ),
             ),

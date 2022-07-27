@@ -16,11 +16,11 @@ class CityCard extends StatefulWidget {
 
 class _CityCardState extends State {
 
-  late String name;
+  late String cityName;
   String temperature = '';
 
-  _CityCardState(String name){
-    this.name = name;
+  _CityCardState(String cityName){
+    this.cityName = cityName;
   }
 
   Widget build(BuildContext context){
@@ -30,7 +30,7 @@ class _CityCardState extends State {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context){
-            return CityScreen(name: name);
+            return CityScreen(cityName: cityName);
           })
         );
       },
@@ -41,7 +41,7 @@ class _CityCardState extends State {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    '$name',
+                    '$cityName',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20
@@ -67,7 +67,7 @@ class _CityCardState extends State {
   }
 
   void _setCurrentTemperature() async {
-    final int currentTemperature = await WeatherApi().getCurrentWeather(name);
+    final int currentTemperature = await WeatherApi().getCurrentTemperature(cityName);
     setState((){
       temperature = currentTemperature.toString();
     });

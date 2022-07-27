@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/components/hourly_weather_card.dart';
 
 class HourlyWeather extends StatefulWidget {
   @override
@@ -7,7 +6,7 @@ class HourlyWeather extends StatefulWidget {
 }
 
 class _hourlyWeatherState extends State {
-  List<dynamic> hourlyWeather = ['09:00', '10:00', '11:00', '09:00', '10:00', '11:00', '09:00', '10:00', '11:00', '09:00', '10:00', '11:00'];
+  List<dynamic> hourly = ['09:00', '10:00', '11:00', '09:00', '10:00', '11:00', '09:00', '10:00', '11:00', '09:00', '10:00', '11:00'];
 
   @override
   Widget build(BuildContext context){
@@ -17,11 +16,42 @@ class _hourlyWeatherState extends State {
       decoration: BoxDecoration(
         color: Colors.white
       ),
-      child: Column(
+      child: Table(
         children: [
-          for(var item in hourlyWeather) HourlyWeatherCard()
+          TableRow(
+              decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Colors.grey.shade400))
+              ),
+              children: [
+                Center(
+                  child: Text('Day',
+                    style: TextStyle(
+                        fontSize: 20
+                    ),),
+                ),
+                Center(child: Text('Weather',
+                    style: TextStyle(
+                        fontSize: 20
+                    ))),
+                Center(child: Text('Temperature',
+                    style: TextStyle(
+                        fontSize: 20
+                    ))),
+              ]),
+          for (var item in hourly) buildRow(item)
         ],
       ),
     );
   }
+
+  TableRow buildRow(String cell) => TableRow(children: [
+    Center(child: Text(cell)),
+    Center(
+        child: Image.asset(
+          'images/sunny_rainy.png',
+          height: 25,
+          width: 25,
+        )),
+    Center(child: Text('22°C')),
+  ]);
 }
