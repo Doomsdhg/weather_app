@@ -21,7 +21,7 @@ class WeatherApi extends WebService {
   Future getForecast({required String city, required String days}) async {
     final response = await _makeGetRequest(await Endpoints.getForecastWeather(city: city, days: days));
     final decodedBody = await json.decode(response.body);
-    return decodedBody['forecast']['forecastday'];
+    return decodedBody;
   }
 
   Future findCities(String query) async {

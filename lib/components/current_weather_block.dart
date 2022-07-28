@@ -10,7 +10,7 @@ class _currentWeatherBlockState extends State {
   Widget build(BuildContext context){
     return Container(
       margin: EdgeInsets.all(10),
-      height: 200,
+      height: 170,
       child: FractionallySizedBox(
           widthFactor: 1,
           child: Container(
@@ -30,43 +30,33 @@ class _currentWeatherBlockState extends State {
             child: Column(
               children: [
                 Container(
-                  alignment: AlignmentDirectional.topStart,
-                  child: Text(
-                    'Right now',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontSize: 25),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 15),
                   child: Row(
                     children: [
-                      Container(
-                        child: Column(
-                          children: [
-                            Text(
-                              '25°C',
-                              style: TextStyle(fontSize: 35),
+                      Column(
+                        children: [
+                          Container(
+                            alignment: AlignmentDirectional.topStart,
+                            child: Text(
+                              'Right now',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(fontSize: 25),
                             ),
-                            Text(
-                              'Mostly sunny',
-                              style: TextStyle(fontSize: 22),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 20),
-                              child: Text(
-                                'Batumi, GE',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.grey),
-                              ),
-                            )
-                          ],
-                        ),
+                          ),
+                          Container(
+                            child: Text(
+                                  '25°C',
+                                  style: TextStyle(fontSize: 35),
+                                )
+                          ),
+                        ]
                       ),
                       Container(
                         child: Column(
                           children: [
+                            Text(
+                              'Mostly sunny',
+                              style: TextStyle(fontSize: 22),
+                            ),
                             Image.asset(
                               'images/sunny_rainy.png',
                               width: 100,

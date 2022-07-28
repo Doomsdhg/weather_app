@@ -26,20 +26,22 @@ class _cityScreenState extends State {
       appBar: AppBar(
         title: Text('$cityName weather'),
       ),
-      body: Container(
-          margin: EdgeInsets.all(20),
-          child: FractionallySizedBox(
-            widthFactor: 1,
-            child: ColoredBox(
-              color: Colors.grey.shade200,
-              child: Column(
-                children: [
-                  CurrentWeatherBlock(),
-                  ForecastBlock(cityName: cityName,)
-                ],
+      body: SingleChildScrollView(
+        child: Container(
+            margin: EdgeInsets.all(20),
+            child: FractionallySizedBox(
+              widthFactor: 1,
+              child: ColoredBox(
+                color: Colors.grey.shade200,
+                child: Column(
+                  children: [
+                    CurrentWeatherBlock(),
+                    ForecastBlock(cityName: cityName,)
+                  ],
+                ),
               ),
-            ),
-          )),
+            )),
+      ),
     );
   }
 }
