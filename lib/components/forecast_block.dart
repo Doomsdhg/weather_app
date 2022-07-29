@@ -112,33 +112,36 @@ class _forecastBlockState extends State {
                         ],
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(top: 20),
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(color: Colors.white),
-                      child: Table(
-                        children: [
-                          TableRow(
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color: Colors.grey.shade400))),
-                              children: [
-                                Center(
-                                  child: Text(
-                                    'Time',
-                                    style: TextStyle(fontSize: 20),
+                    FractionallySizedBox(
+                      widthFactor: 1,
+                      child: Container(
+                        margin: EdgeInsets.only(top: 20),
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(color: Colors.white),
+                        child: Table(
+                          children: [
+                            TableRow(
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            color: Colors.grey.shade400))),
+                                children: [
+                                  Center(
+                                    child: Text(
+                                      'Time',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
                                   ),
-                                ),
-                                Center(
-                                    child: Text('Weather',
-                                        style: TextStyle(fontSize: 20))),
-                                Center(
-                                    child: Text('Temperature',
-                                        style: TextStyle(fontSize: 20))),
-                              ]),
-                          for (var item in forecast) _buildRow(item)
-                        ],
+                                  Center(
+                                      child: Text('Weather',
+                                          style: TextStyle(fontSize: 20))),
+                                  Center(
+                                      child: Text('Temperature',
+                                          style: TextStyle(fontSize: 20))),
+                                ]),
+                            for (var item in forecast) _buildRow(item)
+                          ],
+                        ),
                       ),
                     )
                   ],
@@ -152,7 +155,7 @@ class _forecastBlockState extends State {
   TableRow _buildRow(dynamic forecastObject) => TableRow(children: [
         Center(
             child: Text(
-          '${forecastObject['time']}',
+          _transformTime(forecastObject['time']),
           style: TextStyle(fontSize: 18),
         )),
         Center(
@@ -167,6 +170,12 @@ class _forecastBlockState extends State {
           style: TextStyle(fontSize: 18),
         )),
       ]);
+
+  String _transformTime (String time){
+    DateTime dateTime = DateTime.parse(time);
+    String output = '${dateTime.day}.${dateTime.month} ${dateTime.hour}:00';
+    return output;
+  }
 
   MaterialStateProperty<Color> _getButtonColor(bool isPressed) {
     final buttonColor = isPressed ? Colors.blue : Colors.grey.shade200;

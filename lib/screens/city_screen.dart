@@ -33,12 +33,15 @@ class _cityScreenState extends State {
               widthFactor: 1,
               child: ColoredBox(
                 color: Colors.grey.shade200,
-                child: Column(
-                  children: [
-                    CurrentWeatherBlock(),
-                    ForecastBlock(cityName: cityName,)
-                  ],
-                ),
+                child: Container(
+                  margin: EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      CurrentWeatherBlock(cityName: cityName),
+                      ForecastBlock(cityName: cityName,)
+                    ],
+                  ),
+                )
               ),
             )),
       ),
