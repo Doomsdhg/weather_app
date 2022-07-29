@@ -29,12 +29,14 @@ class _cityScreenState extends State {
       body: SingleChildScrollView(
         child: Container(
             margin: EdgeInsets.all(20),
+            constraints: BoxConstraints(
+              minHeight: _getScreenHeight()
+            ),
             child: FractionallySizedBox(
               widthFactor: 1,
               child: ColoredBox(
                 color: Colors.grey.shade200,
                 child: Container(
-                  margin: EdgeInsets.all(20),
                   child: Column(
                     children: [
                       CurrentWeatherBlock(cityName: cityName),
@@ -46,5 +48,9 @@ class _cityScreenState extends State {
             )),
       ),
     );
+  }
+
+  double _getScreenHeight(){
+    return MediaQuery.of(context).size.height - 120;
   }
 }

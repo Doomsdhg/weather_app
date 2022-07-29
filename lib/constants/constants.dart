@@ -1,5 +1,5 @@
 class AssetsPaths {
-  static String API_KEY = 'api_key.json';
+  static String API_KEY = 'packages/weather_app/assets/api_key.json';
 }
 
 class ApiKeyObjectAccessors {

@@ -119,26 +119,8 @@ class _forecastBlockState extends State {
                         padding: EdgeInsets.all(20),
                         decoration: BoxDecoration(color: Colors.white),
                         child: Table(
+                          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                           children: [
-                            TableRow(
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                        bottom: BorderSide(
-                                            color: Colors.grey.shade400))),
-                                children: [
-                                  Center(
-                                    child: Text(
-                                      'Time',
-                                      style: TextStyle(fontSize: 20),
-                                    ),
-                                  ),
-                                  Center(
-                                      child: Text('Weather',
-                                          style: TextStyle(fontSize: 20))),
-                                  Center(
-                                      child: Text('Temperature',
-                                          style: TextStyle(fontSize: 20))),
-                                ]),
                             for (var item in forecast) _buildRow(item)
                           ],
                         ),
@@ -152,28 +134,33 @@ class _forecastBlockState extends State {
         });
   }
 
-  TableRow _buildRow(dynamic forecastObject) => TableRow(children: [
-        Center(
-            child: Text(
-          _transformTime(forecastObject['time']),
-          style: TextStyle(fontSize: 18),
-        )),
-        Center(
-            child: Image.asset(
-          'images/sunny_rainy.png',
-          height: 25,
-          width: 25,
-        )),
-        Center(
-            child: Text(
-          '${forecastObject['temp_c']}°C',
-          style: TextStyle(fontSize: 18),
-        )),
+  TableRow _buildRow(dynamic forecastObject) => TableRow(
+      children: [
+        Align(
+          alignment: Alignment.center,
+          child: Text(
+            _transformTime(forecastObject['time']),
+            style: TextStyle(fontSize: 18),
+          ),
+        ),
+        Row(
+          children: [
+            Image.network(
+              'https:${forecastObject['condition']['icon']}',
+              width: 30,
+              height: 30,
+            ),
+            Text(
+              '${forecastObject['temp_c']}°C',
+              style: TextStyle(fontSize: 18),
+            )
+          ],
+        )
       ]);
 
-  String _transformTime (String time){
+  String _transformTime(String time) {
     DateTime dateTime = DateTime.parse(time);
-    String output = '${dateTime.day}.${dateTime.month} ${dateTime.hour}:00';
+    String output = '${dateTime.hour}:00';
     return output;
   }
 

@@ -36,7 +36,6 @@ class _currentWeatherBlockState extends State {
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData)
             return Container(
-              margin: EdgeInsets.all(10),
               height: 170,
               child: FractionallySizedBox(
                   widthFactor: 1,
@@ -80,8 +79,8 @@ class _currentWeatherBlockState extends State {
                                       weather['condition']['text'].toString(),
                                       style: TextStyle(fontSize: 22),
                                     ),
-                                    Image.asset(
-                                      'images/sunny_rainy.png',
+                                    Image.network(
+                                      'https:${_getImageUrl()}',
                                       width: 100,
                                       height: 100,
                                     )
@@ -99,6 +98,10 @@ class _currentWeatherBlockState extends State {
           else
             return CircularProgressIndicator();
         });
+  }
+
+  String _getImageUrl(){
+    return weather['condition']['icon'].toString();
   }
 
   _getCurrentWeather() async {

@@ -17,59 +17,77 @@ class CityCard extends StatefulWidget {
 class _CityCardState extends State {
 
   late String cityName;
-  String temperature = '';
+
+  late String temperature;
+
+  late Future<double> temperatureFuture;
 
   _CityCardState(String cityName){
     this.cityName = cityName;
   }
 
-  Widget build(BuildContext context){
-    _setCurrentTemperature();
-    return GestureDetector(
-      onTap: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context){
-            return CityScreen(cityName: cityName);
-          })
-        );
-      },
-      child: Card(
-          child: Container(
-            child: Row(
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    '$cityName',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20
-                    ),
-                  ),
-                ),
-                Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      '$temperature°C',
-                      style: TextStyle(
-                          fontSize: 30
-                      ),
-                    )
-                )
-              ],
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            ),
-            padding: EdgeInsets.all(20),
-          )
-      ),
-    );
+  @override
+  void initState() {
+    this.temperatureFuture = _getCurrentTemperature();
+    super.initState();
   }
 
-  void _setCurrentTemperature() async {
-    final int currentTemperature = await WeatherApi().getCurrentTemperature(cityName);
+  Widget build(BuildContext context){
+    return FutureBuilder(
+        future: temperatureFuture,
+        builder: (context, AsyncSnapshot<dynamic> snapshot){
+      if (snapshot.hasData) {
+        return GestureDetector(
+          onTap: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context){
+                  return CityScreen(cityName: cityName);
+                })
+            );
+          },
+          child: Card(
+              child: Container(
+                child: Row(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        '$cityName',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20
+                        ),
+                      ),
+                    ),
+                    Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          '$temperature°C',
+                          style: TextStyle(
+                              fontSize: 30
+                          ),
+                        )
+                    )
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                ),
+                padding: EdgeInsets.all(20),
+              )
+          ),
+        );
+      }
+      else {
+        return CircularProgressIndicator();
+      }
+    });
+  }
+
+  Future<double> _getCurrentTemperature() async {
+    final double currentTemperature = await WeatherApi().getCurrentTemperature(cityName);
     setState((){
       temperature = currentTemperature.toString();
     });
+    return currentTemperature;
   }
 }
