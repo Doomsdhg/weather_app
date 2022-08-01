@@ -30,6 +30,12 @@ class WeatherApi extends WebService {
     return _getCitiesNamesList(citiesList: citiesList, query: query);
   }
 
+  Future getLocation(String city) async {
+    final response = await _makeGetRequest(await Endpoints.getCurrentWeather(city));
+    final decodedBody = await json.decode(response.body);
+    return decodedBody['location'];
+  }
+
   List<String> _getCitiesNamesList({
     required List<dynamic> citiesList,
     required String query

@@ -36,9 +36,10 @@ class _currentWeatherBlockState extends State {
         builder: (context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData)
             return Container(
+              margin: EdgeInsets.only(top: 20),
               height: 170,
               child: FractionallySizedBox(
-                  widthFactor: 1,
+                  widthFactor: 0.9,
                   child: Container(
                     padding: EdgeInsets.all(20),
                     decoration: BoxDecoration(
@@ -59,7 +60,6 @@ class _currentWeatherBlockState extends State {
                             children: [
                               Column(children: [
                                 Container(
-                                  alignment: AlignmentDirectional.topStart,
                                   child: Text(
                                     'Right now',
                                     textAlign: TextAlign.start,
@@ -67,12 +67,14 @@ class _currentWeatherBlockState extends State {
                                   ),
                                 ),
                                 Container(
+                                  margin: EdgeInsets.only(top: 20),
                                     child: Text(
                                   '${weather['temp_c']}°C',
                                   style: TextStyle(fontSize: 35),
                                 )),
                               ]),
                               Container(
+                                margin: EdgeInsets.only(top: 25),
                                 child: Column(
                                   children: [
                                     Text(
@@ -81,8 +83,8 @@ class _currentWeatherBlockState extends State {
                                     ),
                                     Image.network(
                                       'https:${_getImageUrl()}',
-                                      width: 100,
-                                      height: 100,
+                                      width: 60,
+                                      height: 60,
                                     )
                                   ],
                                 ),
