@@ -13,7 +13,7 @@ class CityManagementDialog {
     return showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text('Input city name to add'),
+        title: const Text('City name'),
         actions: <Widget>[
           _AutoCompleteInput(inputCallback),
           TextButton(

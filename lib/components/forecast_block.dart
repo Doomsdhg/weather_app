@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:weather_app/api/weather_api.dart';
+import 'package:weather_app/constants/constants.dart';
 
 class ForecastBlock extends StatefulWidget {
   late String cityName;
@@ -15,9 +16,8 @@ class ForecastBlock extends StatefulWidget {
 }
 
 class _forecastBlockState extends State {
-  bool todayPressed = true;
-  bool twoDaysPressed = false;
-  bool threeDaysPressed = false;
+
+  ButtonsState buttonsState = ButtonsState();
 
   late String cityName;
 
@@ -34,6 +34,7 @@ class _forecastBlockState extends State {
   @override
   void initState() {
     this.forecastFuture = _getApiData();
+    buttonsState.initState();
     super.initState();
   }
 
@@ -54,13 +55,10 @@ class _forecastBlockState extends State {
                         children: <Widget>[
                           TextButton(
                             style: ButtonStyle(
-                                backgroundColor: _getButtonColor(todayPressed)),
+                                backgroundColor: _getButtonColor(buttonsState.today)),
                             onPressed: () {
-                              setState(() {
-                                todayPressed = true;
-                                twoDaysPressed = false;
-                                threeDaysPressed = false;
-                              });
+                              buttonsState.refreshState();
+                              buttonsState.today = true;
                               _getApiData();
                             },
                             child: Container(
@@ -74,13 +72,10 @@ class _forecastBlockState extends State {
                           TextButton(
                             style: ButtonStyle(
                                 backgroundColor:
-                                    _getButtonColor(twoDaysPressed)),
+                                    _getButtonColor(buttonsState.tomorrow)),
                             onPressed: () {
-                              setState(() {
-                                todayPressed = false;
-                                twoDaysPressed = true;
-                                threeDaysPressed = false;
-                              });
+                              buttonsState.refreshState();
+                              buttonsState.tomorrow = true;
                               _getApiData();
                             },
                             child: Container(
@@ -94,13 +89,10 @@ class _forecastBlockState extends State {
                           TextButton(
                             style: ButtonStyle(
                                 backgroundColor:
-                                    _getButtonColor(threeDaysPressed)),
+                                    _getButtonColor(buttonsState.dayAfterTomorrow)),
                             onPressed: () {
-                              setState(() {
-                                todayPressed = false;
-                                twoDaysPressed = false;
-                                threeDaysPressed = true;
-                              });
+                              buttonsState.refreshState();
+                              buttonsState.dayAfterTomorrow = true;
                               _getApiData();
                             },
                             child: Container(
@@ -175,32 +167,36 @@ class _forecastBlockState extends State {
         Align(
           alignment: Alignment.center,
           child: Text(
-            _transformTime(forecastObject['time']),
+            _transformTime(forecastObject[DateTimeAccessors.TIME]),
             style: TextStyle(fontSize: 18),
           ),
         ),
         Row(
           children: [
             Image.network(
-              'https:${forecastObject['condition']['icon']}',
+              _getImageUrl(forecastObject),
               width: 30,
               height: 30,
             ),
             Text(
-              '${forecastObject['temp_c']}°C',
+              '${forecastObject[WeatherAccessors.CELCIUS_TEMPERATURE]}${TemperatureConstants.CELCIUS}',
               style: TextStyle(fontSize: 18),
             )
           ],
         )
       ]);
 
+  String _getImageUrl(dynamic forecastObject){
+    return '${UrlConstants.HTTPS_PROTOCOL}${forecastObject[ConditionAccessors.CONDITION][ConditionAccessors.ICON]}';
+  }
+
   String _setForecastDate(List<dynamic> hourlyForecast){
-    return hourlyForecast[0]['time'].toString().substring(0, 10);
+    return hourlyForecast[0][DateTimeAccessors.TIME].toString().substring(0, 10);
   }
 
   String _transformTime(String time) {
     DateTime dateTime = DateTime.parse(time);
-    String output = '${dateTime.hour}:00';
+    String output = '${dateTime.hour}${TimeConstants.EXACTLY_HOUR}';
     return output;
   }
 
@@ -210,8 +206,7 @@ class _forecastBlockState extends State {
   }
 
   Future<List<dynamic>> _getApiData() async {
-    var response = await WeatherApi()
-        .getForecast(city: cityName, days: _getForecastDay());
+    var response = await WeatherApi().getForecast(city: cityName, days: _getForecastLength());
     List<dynamic> hourlyForecast = _filterPassedHours(response);
     setState(() {
       forecast = hourlyForecast;
@@ -221,22 +216,38 @@ class _forecastBlockState extends State {
   }
 
   List<dynamic> _filterPassedHours(dynamic response) {
-    final localCurrentTime = DateTime.parse(response['location']['localtime']);
-    List<dynamic> dailyForecast = response['forecast']['forecastday'];
-    List<dynamic> hourlyForecast = dailyForecast.last['hour'];
+    final localCurrentTime = DateTime.parse(response[LocationAcessors.LOCATION][LocationAcessors.LOCAL_TIME].toString());
+    List<dynamic> dailyForecast = response[WeatherAccessors.FORECAST][WeatherAccessors.FORECAST_DAY];
+    List<dynamic> hourlyForecast = dailyForecast.last[ForecastAccessors.HOUR];
     final filteredHourlyForecast = hourlyForecast.where((forecastObject) {
-      final forecastTime = DateTime.parse(forecastObject['time']);
+      final forecastTime = DateTime.parse(forecastObject[DateTimeAccessors.TIME]);
       return forecastTime.compareTo(localCurrentTime) > 0;
     }).toList();
     return filteredHourlyForecast;
   }
 
-  String _getForecastDay() {
-    if (todayPressed)
+  String _getForecastLength() {
+    if (buttonsState.today)
       return '1';
-    else if (twoDaysPressed)
+    else if (buttonsState.tomorrow)
       return '2';
     else
       return '3';
+  }
+}
+
+class ButtonsState {
+  bool today = false;
+  bool tomorrow = false;
+  bool dayAfterTomorrow = false;
+
+  initState(){
+    today = true;
+  }
+
+  refreshState(){
+    today = false;
+    tomorrow = false;
+    dayAfterTomorrow = false;
   }
 }

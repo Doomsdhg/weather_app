@@ -9,13 +9,13 @@ class WeatherApi extends WebService {
   Future getCurrentTemperature(String city) async {
     final response = await _makeGetRequest(await Endpoints.getCurrentWeather(city));
     final decodedBody = await json.decode(response.body);
-    return decodedBody[WeatherResponseAccessors.CURRENT][WeatherResponseAccessors.CELCIUS_TEMPERATURE];
+    return decodedBody[WeatherAccessors.CURRENT][WeatherAccessors.CELCIUS_TEMPERATURE];
   }
 
   Future getCurrentWeather(String city) async {
     final response = await _makeGetRequest(await Endpoints.getCurrentWeather(city));
     final decodedBody = await json.decode(response.body);
-    return decodedBody['current'];
+    return decodedBody[WeatherAccessors.CURRENT];
   }
 
   Future getForecast({required String city, required String days}) async {
@@ -33,7 +33,7 @@ class WeatherApi extends WebService {
   Future getLocation(String city) async {
     final response = await _makeGetRequest(await Endpoints.getCurrentWeather(city));
     final decodedBody = await json.decode(response.body);
-    return decodedBody['location'];
+    return decodedBody[LocationAcessors.LOCATION];
   }
 
   List<String> _getCitiesNamesList({

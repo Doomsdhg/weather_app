@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/api/weather_api.dart';
+import 'package:weather_app/constants/constants.dart';
 
 class CurrentWeatherBlock extends StatefulWidget {
   late String cityName;
@@ -69,7 +70,7 @@ class _currentWeatherBlockState extends State {
                                 Container(
                                   margin: EdgeInsets.only(top: 20),
                                     child: Text(
-                                  '${weather['temp_c']}°C',
+                                  '${weather[WeatherAccessors.CELCIUS_TEMPERATURE]}${TemperatureConstants.CELCIUS}',
                                   style: TextStyle(fontSize: 35),
                                 )),
                               ]),
@@ -78,11 +79,11 @@ class _currentWeatherBlockState extends State {
                                 child: Column(
                                   children: [
                                     Text(
-                                      weather['condition']['text'].toString(),
+                                      weather[ConditionAccessors.CONDITION][ConditionAccessors.TEXT].toString(),
                                       style: TextStyle(fontSize: 22),
                                     ),
                                     Image.network(
-                                      'https:${_getImageUrl()}',
+                                      _getImageUrl(),
                                       width: 60,
                                       height: 60,
                                     )
@@ -103,7 +104,7 @@ class _currentWeatherBlockState extends State {
   }
 
   String _getImageUrl(){
-    return weather['condition']['icon'].toString();
+    return '${UrlConstants.HTTPS_PROTOCOL}${weather[ConditionAccessors.CONDITION][ConditionAccessors.ICON].toString()}';
   }
 
   _getCurrentWeather() async {

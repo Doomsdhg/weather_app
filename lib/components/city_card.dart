@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/api/weather_api.dart';
+import 'package:weather_app/constants/constants.dart';
 import 'package:weather_app/screens/city_screen.dart';
 
 class CityCard extends StatefulWidget {
@@ -63,7 +64,7 @@ class _CityCardState extends State {
                     Align(
                         alignment: Alignment.centerRight,
                         child: Text(
-                          '$temperature°C',
+                          '${temperature}${TemperatureConstants.CELCIUS}',
                           style: TextStyle(
                               fontSize: 30
                           ),
