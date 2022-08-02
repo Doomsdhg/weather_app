@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:weather_app/api/weather_api.dart';
 import 'package:weather_app/constants/constants.dart';
 
@@ -108,6 +109,9 @@ class _currentWeatherBlockState extends State {
   }
 
   _getCurrentWeather() async {
+    final directory = await getApplicationDocumentsDirectory();
+    print('qwe');
+    print(directory.path);
     dynamic response = await WeatherApi().getCurrentWeather(cityName);
     setState(() {
       weather = response;
