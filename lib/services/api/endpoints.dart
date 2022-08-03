@@ -1,4 +1,4 @@
-import 'package:weather_app/api/crypting_manager.dart';
+import 'package:weather_app/services/api/crypting_manager.dart';
 
 class Endpoints {
 

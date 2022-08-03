@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:weather_app/api/weather_api.dart';
+import 'package:weather_app/services/api/weather_api.dart';
 import 'package:weather_app/constants/constants.dart';
 
 class ForecastBlock extends StatefulWidget {

@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'package:weather_app/api/endpoints.dart';
+import 'package:weather_app/services/api/endpoints.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:weather_app/constants/constants.dart';

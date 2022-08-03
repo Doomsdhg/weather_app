@@ -1,30 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/api/weather_api.dart';
+import 'package:weather_app/services/api/weather_api.dart';
 import 'package:weather_app/constants/constants.dart';
 import 'package:weather_app/screens/city_screen.dart';
+import 'package:weather_app/services/filesystem/storage_manager.dart';
 
 class CityCard extends StatefulWidget {
 
   late String name;
 
-  CityCard({required String name}){
+  late Function refreshCallback;
+
+  CityCard({required String name, required Function refreshCallback}){
     this.name = name;
+    this.refreshCallback = refreshCallback;
   }
 
   @override
-  _CityCardState createState() => _CityCardState(this.name);
+  _CityCardState createState() => _CityCardState(cityName: name, refreshCallback: refreshCallback);
 }
 
 class _CityCardState extends State {
 
   late String cityName;
 
+  late Function refreshCallback;
+
   late String temperature;
 
   late Future<double> temperatureFuture;
 
-  _CityCardState(String cityName){
+  _CityCardState({required String cityName, required Function refreshCallback}){
     this.cityName = cityName;
+    this.refreshCallback = refreshCallback;
   }
 
   @override
@@ -46,6 +53,10 @@ class _CityCardState extends State {
                   return CityScreen(cityName: cityName);
                 })
             );
+          },
+          onLongPress: () async {
+            await StorageManager().deleteCity(cityName: cityName);
+            await refreshCallback();
           },
           child: Card(
               child: Container(
