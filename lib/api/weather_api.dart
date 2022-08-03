@@ -8,31 +8,31 @@ class WeatherApi extends WebService {
 
   Future getCurrentTemperature(String city) async {
     final response = await _makeGetRequest(await Endpoints.getCurrentWeather(city));
-    final decodedBody = await json.decode(response.body);
+    final decodedBody = json.decode(response.body);
     return decodedBody[WeatherAccessors.CURRENT][WeatherAccessors.CELCIUS_TEMPERATURE];
   }
 
   Future getCurrentWeather(String city) async {
     final response = await _makeGetRequest(await Endpoints.getCurrentWeather(city));
-    final decodedBody = await json.decode(response.body);
+    final decodedBody = json.decode(response.body);
     return decodedBody[WeatherAccessors.CURRENT];
   }
 
   Future getForecast({required String city, required String days}) async {
     final response = await _makeGetRequest(await Endpoints.getForecastWeather(city: city, days: days));
-    final decodedBody = await json.decode(response.body);
+    final decodedBody = json.decode(response.body);
     return decodedBody;
   }
 
   Future findCities(String query) async {
     final http.Response response = await _makeGetRequest(await Endpoints.getCitiesList(query));
-    final citiesList = await json.decode(response.body);
+    final citiesList = json.decode(response.body);
     return _getCitiesNamesList(citiesList: citiesList, query: query);
   }
 
   Future getLocation(String city) async {
     final response = await _makeGetRequest(await Endpoints.getCurrentWeather(city));
-    final decodedBody = await json.decode(response.body);
+    final decodedBody = json.decode(response.body);
     return decodedBody[LocationAcessors.LOCATION];
   }
 

@@ -33,8 +33,8 @@ class _forecastBlockState extends State {
 
   @override
   void initState() {
-    this.forecastFuture = _getApiData();
     buttonsState.initState();
+    this.forecastFuture = _getApiData();
     super.initState();
   }
 
