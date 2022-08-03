@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/api/weather_api.dart';
+import 'package:weather_app/constants/constants.dart';
+import 'package:weather_app/screens/city_screen.dart';
 
 class CityCard extends StatefulWidget {
 
@@ -15,50 +17,78 @@ class CityCard extends StatefulWidget {
 
 class _CityCardState extends State {
 
-  late String name;
-  String temperature = '';
+  late String cityName;
 
-  _CityCardState(String name){
-    this.name = name;
+  late String temperature;
+
+  late Future<double> temperatureFuture;
+
+  _CityCardState(String cityName){
+    this.cityName = cityName;
+  }
+
+  @override
+  void initState() {
+    this.temperatureFuture = _getCurrentTemperature();
+    super.initState();
   }
 
   Widget build(BuildContext context){
-    _setCurrentTemperature();
-    return Card(
-      child: Container(
-        child: Row(
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                '$name',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20
+    return FutureBuilder(
+        future: temperatureFuture,
+        builder: (context, AsyncSnapshot<dynamic> snapshot){
+      if (snapshot.hasData) {
+        return GestureDetector(
+          onTap: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context){
+                  return CityScreen(cityName: cityName);
+                })
+            );
+          },
+          child: Card(
+              child: Container(
+                child: Row(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        '$cityName',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: FontConstants.MIDDLE_SIZE
+                        ),
+                      ),
+                    ),
+                    Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          '${temperature}${TemperatureConstants.CELCIUS}',
+                          style: TextStyle(
+                              fontSize: FontConstants.LARGE_SIZE
+                          ),
+                        )
+                    )
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                '$temperature°C',
-                style: TextStyle(
-                    fontSize: 30
-                ),
+                padding: EdgeInsets.all(20),
               )
-            )
-          ],
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        ),
-        padding: EdgeInsets.all(20),
-      )
-    );
+          ),
+        );
+      }
+      else {
+        return CircularProgressIndicator();
+      }
+    });
   }
 
-  void _setCurrentTemperature() async {
-    final int currentTemperature = await WeatherApi().getCurrentWeather(name);
+  Future<double> _getCurrentTemperature() async {
+    final double currentTemperature = await WeatherApi().getCurrentTemperature(cityName);
     setState((){
       temperature = currentTemperature.toString();
     });
+    return currentTemperature;
   }
 }
