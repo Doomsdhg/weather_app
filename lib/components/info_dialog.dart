@@ -7,14 +7,23 @@ class InfoDialog {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: const Text('Weather app'),
-        content: Column(
+        content: Wrap(
+          alignment: WrapAlignment.start,
           children: [
-            Text('Version: 0.1.0 '),
-            Text('Contact me: tohanknv@yandex.ru'),
-            Text('Known bugs: '),
-            Text('Fixes bugs: ')
+            Text(
+                'Version: 0.1.0 '
+            ),
+            Text(
+                'Contact me: tohanknv@yandex.ru'
+            ),
+            Text(
+                'Known bugs: '
+            ),
+            Text(
+                'Fixes bugs: '
+            )
           ],
-        ),
+        )
       ),
     );
   }

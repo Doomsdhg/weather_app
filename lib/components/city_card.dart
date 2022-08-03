@@ -57,7 +57,7 @@ class _CityCardState extends State {
                         '$cityName',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 20
+                            fontSize: FontConstants.MIDDLE_SIZE
                         ),
                       ),
                     ),
@@ -66,7 +66,7 @@ class _CityCardState extends State {
                         child: Text(
                           '${temperature}${TemperatureConstants.CELCIUS}',
                           style: TextStyle(
-                              fontSize: 30
+                              fontSize: FontConstants.LARGE_SIZE
                           ),
                         )
                     )

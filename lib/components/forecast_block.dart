@@ -66,7 +66,7 @@ class _forecastBlockState extends State {
                                 child: Text(
                                   'Today',
                                   style: TextStyle(
-                                      color: Colors.black, fontSize: 20),
+                                      color: Colors.black, fontSize: FontConstants.MIDDLE_SIZE),
                                 )),
                           ),
                           TextButton(
@@ -83,7 +83,7 @@ class _forecastBlockState extends State {
                                 child: Text(
                                   '+1',
                                   style: TextStyle(
-                                      color: Colors.black, fontSize: 20),
+                                      color: Colors.black, fontSize: FontConstants.MIDDLE_SIZE),
                                 )),
                           ),
                           TextButton(
@@ -100,7 +100,7 @@ class _forecastBlockState extends State {
                                 child: Text(
                                   '+2',
                                   style: TextStyle(
-                                      color: Colors.black, fontSize: 20),
+                                      color: Colors.black, fontSize: FontConstants.MIDDLE_SIZE),
                                 )),
                           ),
                         ],
@@ -120,7 +120,7 @@ class _forecastBlockState extends State {
                             forecastDate,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 35
+                                fontSize: FontConstants.LARGE_SIZE
                             ),
                           ),
                         ),
@@ -168,7 +168,7 @@ class _forecastBlockState extends State {
           alignment: Alignment.center,
           child: Text(
             _transformTime(forecastObject[DateTimeAccessors.TIME]),
-            style: TextStyle(fontSize: 18),
+            style: TextStyle(fontSize: FontConstants.SMALL_SIZE),
           ),
         ),
         Row(
@@ -180,7 +180,7 @@ class _forecastBlockState extends State {
             ),
             Text(
               '${forecastObject[WeatherAccessors.CELCIUS_TEMPERATURE]}${TemperatureConstants.CELCIUS}',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: FontConstants.SMALL_SIZE),
             )
           ],
         )
@@ -228,11 +228,11 @@ class _forecastBlockState extends State {
 
   String _getForecastLength() {
     if (buttonsState.today)
-      return '1';
+      return ForecastLengthConstants.ONE_DAY;
     else if (buttonsState.tomorrow)
-      return '2';
+      return ForecastLengthConstants.TWO_DAYS;
     else
-      return '3';
+      return ForecastLengthConstants.THREE_DAYS;
   }
 }
 

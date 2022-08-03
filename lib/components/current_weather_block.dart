@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:weather_app/api/weather_api.dart';
 import 'package:weather_app/constants/constants.dart';
 
@@ -65,14 +64,14 @@ class _currentWeatherBlockState extends State {
                                   child: Text(
                                     'Right now',
                                     textAlign: TextAlign.start,
-                                    style: TextStyle(fontSize: 25),
+                                    style: TextStyle(fontSize: FontConstants.MIDDLE_SIZE),
                                   ),
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(top: 20),
                                     child: Text(
                                   '${weather[WeatherAccessors.CELCIUS_TEMPERATURE]}${TemperatureConstants.CELCIUS}',
-                                  style: TextStyle(fontSize: 35),
+                                  style: TextStyle(fontSize: FontConstants.LARGE_SIZE),
                                 )),
                               ]),
                               Container(
@@ -81,7 +80,7 @@ class _currentWeatherBlockState extends State {
                                   children: [
                                     Text(
                                       weather[ConditionAccessors.CONDITION][ConditionAccessors.TEXT].toString(),
-                                      style: TextStyle(fontSize: 22),
+                                      style: TextStyle(fontSize: FontConstants.MIDDLE_SIZE),
                                     ),
                                     Image.network(
                                       _getImageUrl(),
@@ -109,9 +108,6 @@ class _currentWeatherBlockState extends State {
   }
 
   _getCurrentWeather() async {
-    final directory = await getApplicationDocumentsDirectory();
-    print('qwe');
-    print(directory.path);
     dynamic response = await WeatherApi().getCurrentWeather(cityName);
     setState(() {
       weather = response;

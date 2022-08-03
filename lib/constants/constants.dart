@@ -51,3 +51,15 @@ class TimeConstants {
 class TemperatureConstants {
   static String CELCIUS = "°C";
 }
+
+class FontConstants {
+  static double SMALL_SIZE = 18;
+  static double MIDDLE_SIZE = 25;
+  static double LARGE_SIZE = 35;
+}
+
+class ForecastLengthConstants {
+  static String ONE_DAY = "1";
+  static String TWO_DAYS = "2";
+  static String THREE_DAYS = "3";
+}
