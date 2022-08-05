@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/services/api/weather_api.dart';
 import 'package:weather_app/constants/constants.dart';
 import 'package:weather_app/screens/city_screen.dart';
-import 'package:weather_app/services/filesystem/storage_manager.dart';
+import 'package:weather_app/services/api/weather_api.dart';
+
 
 class CityCard extends StatefulWidget {
 
   late String name;
 
+  late String dismissableKey;
+
   late int index;
 
-  CityCard({required String name, required int index}){
+  late Function dismissCallback;
+
+  CityCard({required String name, required String dismissableKey, required Function dismissCallback, required int index}){
     this.name = name;
+    this.dismissableKey = dismissableKey;
     this.index = index;
+    this.dismissCallback = dismissCallback;
   }
 
   @override
-  _CityCardState createState() => _CityCardState(cityName: name, index: index);
+  _CityCardState createState() => _CityCardState(cityName: name, index: index, dismissCallback: dismissCallback, dismissableKey: dismissableKey);
 }
 
 class _CityCardState extends State {
@@ -29,11 +35,15 @@ class _CityCardState extends State {
 
   late int index;
 
-  double cardHeight = 100;
+  late String dismissableKey;
 
-  _CityCardState({required String cityName, required int index}){
+  late Function dismissCallback;
+
+  _CityCardState({required String cityName, required String dismissableKey, required Function dismissCallback, required int index}){
     this.cityName = cityName;
     this.index = index;
+    this.dismissableKey = dismissableKey;
+    this.dismissCallback = dismissCallback;
   }
 
   @override
@@ -47,55 +57,53 @@ class _CityCardState extends State {
         future: temperatureFuture,
         builder: (context, AsyncSnapshot<dynamic> snapshot){
       if (snapshot.hasData) {
-        return GestureDetector(
-          onTap: (){
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context){
-                  return CityScreen(cityName: cityName);
-                })
-            );
-          },
-          onLongPress: () async {
-            return _showDialog().then((value) async {
-              if (value == true) {
-                await StorageManager().deleteCity(cityName: cityName);
-                _hideCard();
-              }
-            });
-          },
-          child: Container(
-            height: cardHeight,
-            child: Card(
+        return Dismissible(
+            key: ValueKey<String>(dismissableKey),
+            onDismissed: (dismissDirection) async {
+              await dismissCallback(cityName, index);
+            },
+            confirmDismiss: (dismissDirection) => _showConfirmationDialog(context),
+            child: GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context){
+                        return CityScreen(cityName: cityName);
+                      })
+                  );
+                },
                 child: Container(
-                  child: Row(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          '$cityName',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: FontConstants.MIDDLE_SIZE
-                          ),
-                        ),
-                      ),
-                      Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            '${temperature}${TemperatureConstants.CELCIUS}',
-                            style: TextStyle(
-                                fontSize: FontConstants.LARGE_SIZE
+                  child: Card(
+                      child: Container(
+                        child: Row(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                '$cityName',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: FontConstants.MIDDLE_SIZE
+                                ),
+                              ),
                             ),
-                          )
+                            Align(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  '${temperature}${TemperatureConstants.CELCIUS}',
+                                  style: TextStyle(
+                                      fontSize: FontConstants.LARGE_SIZE
+                                  ),
+                                )
+                            )
+                          ],
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        ),
+                        padding: EdgeInsets.all(20),
                       )
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   ),
-                  padding: EdgeInsets.all(20),
                 )
-            ),
-          )
+            )
         );
       }
       else {
@@ -104,7 +112,7 @@ class _CityCardState extends State {
     });
   }
 
-  _showDialog(){
+  _showConfirmationDialog(BuildContext dismissableContext){
     return showDialog<bool>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -120,12 +128,8 @@ class _CityCardState extends State {
           ),
         ],
       ),
-    );
-  }
-
-  _hideCard(){
-    setState(() {
-      cardHeight = 0;
+    ).then((value) async {
+      return value;
     });
   }
 

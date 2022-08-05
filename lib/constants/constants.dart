@@ -63,3 +63,8 @@ class ForecastLengthConstants {
   static String TWO_DAYS = "2";
   static String THREE_DAYS = "3";
 }
+
+class DatabaseAccessors {
+  static String DB_FILENAME = "/db.json";
+  static String CITIES_LIST = "citiesList";
+}

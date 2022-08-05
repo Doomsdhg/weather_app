@@ -14,6 +14,8 @@ class _mainScreenState extends State {
 
   late Future<List<String>> _citiesListFuture;
 
+  var now = new DateTime.now();
+
   @override
   void initState() {
     this._citiesListFuture = _getCitiesList();
@@ -39,7 +41,12 @@ class _mainScreenState extends State {
               )),
               body: ListView.builder(
                   itemCount: citiesList.length,
-                  itemBuilder: (context, index) => CityCard(name: citiesList[index], index: index)
+                  itemBuilder: (context, index) => CityCard(
+                      name: citiesList[index],
+                      index: index,
+                      dismissableKey: '${citiesList[index]}${now.millisecondsSinceEpoch}',
+                      dismissCallback: _deleteCity
+                  )
               ),
               floatingActionButton: FloatingActionButton(
                 onPressed: () =>
@@ -57,11 +64,26 @@ class _mainScreenState extends State {
         });
   }
 
+  void rebuildAllChildren(BuildContext context) {
+    void rebuild(Element el) {
+      el.markNeedsBuild();
+      el.visitChildren(rebuild);
+    }
+    (context as Element).visitChildren(rebuild);
+  }
+
   Future<List<String>> _getCitiesList() async {
     final List<String> dbCities = await StorageManager().getCitiesList();
     setState(() {
       this.citiesList = dbCities;
     });
     return dbCities;
+  }
+
+  Future<void> _deleteCity(String cityName, int index) async {
+    await StorageManager().deleteCity(cityName: cityName);
+    setState(() {
+      citiesList.removeAt(index);
+    });
   }
 }
