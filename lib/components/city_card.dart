@@ -8,30 +8,32 @@ class CityCard extends StatefulWidget {
 
   late String name;
 
-  late Function refreshCallback;
+  late int index;
 
-  CityCard({required String name, required Function refreshCallback}){
+  CityCard({required String name, required int index}){
     this.name = name;
-    this.refreshCallback = refreshCallback;
+    this.index = index;
   }
 
   @override
-  _CityCardState createState() => _CityCardState(cityName: name, refreshCallback: refreshCallback);
+  _CityCardState createState() => _CityCardState(cityName: name, index: index);
 }
 
 class _CityCardState extends State {
 
   late String cityName;
 
-  late Function refreshCallback;
-
   late String temperature;
 
   late Future<double> temperatureFuture;
 
-  _CityCardState({required String cityName, required Function refreshCallback}){
+  late int index;
+
+  double cardHeight = 100;
+
+  _CityCardState({required String cityName, required int index}){
     this.cityName = cityName;
-    this.refreshCallback = refreshCallback;
+    this.index = index;
   }
 
   @override
@@ -55,43 +57,75 @@ class _CityCardState extends State {
             );
           },
           onLongPress: () async {
-            await StorageManager().deleteCity(cityName: cityName);
-            await refreshCallback();
+            return _showDialog().then((value) async {
+              if (value == true) {
+                await StorageManager().deleteCity(cityName: cityName);
+                _hideCard();
+              }
+            });
           },
-          child: Card(
-              child: Container(
-                child: Row(
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '$cityName',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: FontConstants.MIDDLE_SIZE
+          child: Container(
+            height: cardHeight,
+            child: Card(
+                child: Container(
+                  child: Row(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          '$cityName',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: FontConstants.MIDDLE_SIZE
+                          ),
                         ),
                       ),
-                    ),
-                    Align(
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          '${temperature}${TemperatureConstants.CELCIUS}',
-                          style: TextStyle(
-                              fontSize: FontConstants.LARGE_SIZE
-                          ),
-                        )
-                    )
-                  ],
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                ),
-                padding: EdgeInsets.all(20),
-              )
-          ),
+                      Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            '${temperature}${TemperatureConstants.CELCIUS}',
+                            style: TextStyle(
+                                fontSize: FontConstants.LARGE_SIZE
+                            ),
+                          )
+                      )
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ),
+                  padding: EdgeInsets.all(20),
+                )
+            ),
+          )
         );
       }
       else {
         return CircularProgressIndicator();
       }
+    });
+  }
+
+  _showDialog(){
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Confirm city deletion'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _hideCard(){
+    setState(() {
+      cardHeight = 0;
     });
   }
 

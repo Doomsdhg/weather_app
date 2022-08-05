@@ -37,8 +37,9 @@ class _mainScreenState extends State {
                       icon: Icon(Icons.info))
                 ],
               )),
-              body: Column(
-                children: [for (var item in citiesList) CityCard(name: item, refreshCallback: _getCitiesList)],
+              body: ListView.builder(
+                  itemCount: citiesList.length,
+                  itemBuilder: (context, index) => CityCard(name: citiesList[index], index: index)
               ),
               floatingActionButton: FloatingActionButton(
                 onPressed: () =>
