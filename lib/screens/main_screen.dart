@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weather_app/components/city_card.dart';
 import 'package:weather_app/components/city_management_dialog.dart';
 import 'package:weather_app/components/info_dialog.dart';
+import 'package:weather_app/services/filesystem/cities_list_manager.dart';
 import 'package:weather_app/services/filesystem/storage_manager.dart';
 
 class MainScreen extends StatefulWidget {
@@ -51,7 +52,7 @@ class _mainScreenState extends State {
               floatingActionButton: FloatingActionButton(
                 onPressed: () =>
                     CityManagementDialog().build(context).then((value) async {
-                      await StorageManager().addCityToList(value);
+                      await CitiesListManager().addCityToList(value);
                       await _getCitiesList();
                     }),
                 tooltip: 'Add city',
@@ -73,7 +74,7 @@ class _mainScreenState extends State {
   }
 
   Future<List<String>> _getCitiesList() async {
-    final List<String> dbCities = await StorageManager().getCitiesList();
+    final List<String> dbCities = await CitiesListManager().getCitiesList();
     setState(() {
       this.citiesList = dbCities;
     });
@@ -81,7 +82,7 @@ class _mainScreenState extends State {
   }
 
   Future<void> _deleteCity(String cityName, int index) async {
-    await StorageManager().deleteCity(cityName: cityName);
+    await CitiesListManager().deleteCity(cityName: cityName);
     setState(() {
       citiesList.removeAt(index);
     });

@@ -14,7 +14,11 @@ class CityCard extends StatefulWidget {
 
   late Function dismissCallback;
 
-  CityCard({required String name, required String dismissableKey, required Function dismissCallback, required int index}){
+  CityCard({
+    required String name,
+    required String dismissableKey,
+    required Function dismissCallback,
+    required int index}){
     this.name = name;
     this.dismissableKey = dismissableKey;
     this.index = index;
@@ -22,7 +26,12 @@ class CityCard extends StatefulWidget {
   }
 
   @override
-  _CityCardState createState() => _CityCardState(cityName: name, index: index, dismissCallback: dismissCallback, dismissableKey: dismissableKey);
+  _CityCardState createState() => _CityCardState(
+      cityName: name,
+      index: index,
+      dismissCallback: dismissCallback,
+      dismissableKey: dismissableKey
+  );
 }
 
 class _CityCardState extends State {

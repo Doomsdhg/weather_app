@@ -40,7 +40,10 @@ class _AutoCompleteInput extends StatelessWidget {
         inputCallback(value);
       },
       optionsBuilder: (TextEditingValue textEditingValue) async {
-        return await _findCities(textEditingValue.text);
+        if (textEditingValue.text.length > 0)
+          return await _findCities(textEditingValue.text);
+        else
+          return List.empty();
       }
     );
   }

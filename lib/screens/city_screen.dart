@@ -61,7 +61,14 @@ class _cityScreenState extends State {
                   )),
             );
           } else {
-            return CircularProgressIndicator();
+            return Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Center(
+                  child: CircularProgressIndicator()
+              ),
+            );
           }
         });
   }
