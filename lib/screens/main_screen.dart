@@ -25,10 +25,6 @@ class _mainScreenState extends State {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _citiesListFuture,
-        builder: (context, AsyncSnapshot<List<String>> snapshot) {
-          if (snapshot.hasData) {
             return Scaffold(
               appBar: AppBar(
                   title: Row(
@@ -40,14 +36,23 @@ class _mainScreenState extends State {
                       icon: Icon(Icons.info))
                 ],
               )),
-              body: ListView.builder(
-                  itemCount: citiesList.length,
-                  itemBuilder: (context, index) => CityCard(
-                      name: citiesList[index],
-                      index: index,
-                      dismissableKey: '${citiesList[index]}${now.millisecondsSinceEpoch}',
-                      dismissCallback: _deleteCity
-                  )
+              body: FutureBuilder(
+                future: _citiesListFuture,
+                builder: (context, AsyncSnapshot<List<String>> snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      itemCount: citiesList.length,
+                      itemBuilder: (context, index) => CityCard(
+                          name: citiesList[index],
+                          index: index,
+                          dismissableKey: '${citiesList[index]}${now.millisecondsSinceEpoch}',
+                          dismissCallback: _deleteCity
+                      )
+                  );
+                  } else {
+                   return CircularProgressIndicator();
+                  }
+                }
               ),
               floatingActionButton: FloatingActionButton(
                 onPressed: () =>
@@ -59,10 +64,6 @@ class _mainScreenState extends State {
                 child: const Icon(Icons.add),
               ),
             );
-          } else {
-            return CircularProgressIndicator();
-          }
-        });
   }
 
   void rebuildAllChildren(BuildContext context) {

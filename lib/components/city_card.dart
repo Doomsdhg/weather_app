@@ -116,7 +116,15 @@ class _CityCardState extends State {
         );
       }
       else {
-        return CircularProgressIndicator();
+        return Card(
+          child: Container(
+            height: 80,
+            child: Align(
+            alignment: Alignment.topLeft,
+            child: CircularProgressIndicator(),
+            ),
+          )
+        );
       }
     });
   }

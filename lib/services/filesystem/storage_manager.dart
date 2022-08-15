@@ -12,12 +12,13 @@ class StorageManager {
   Future<dynamic> readDatabase() async {
     final dbFile = await Database().fetch();
     String data = await dbFile.readAsString();
-    return await jsonDecode(data);
+    return jsonDecode(data);
   }
 
   Future<dynamic> getEntity<T>({required String entityName}) async {
     if (await dbExists) {
       var db = await readDatabase();
+      print(db);
       return db[entityName];
     } else {
       return null;
