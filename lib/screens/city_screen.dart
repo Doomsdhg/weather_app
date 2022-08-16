@@ -53,7 +53,7 @@ class _cityScreenState extends State {
                             children: [
                               CurrentWeatherBlock(cityName: cityName),
                               ForecastBlock(
-                                cityName: cityName,
+                                cityName: cityName
                               )
                             ],
                           ),

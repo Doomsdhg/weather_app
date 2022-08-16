@@ -27,6 +27,8 @@ class _forecastBlockState extends State {
 
   late String forecastDate;
 
+  late dynamic savedData;
+
   _forecastBlockState({required String cityName}) {
     this.cityName = cityName;
   }
@@ -133,7 +135,7 @@ class _forecastBlockState extends State {
                         child: FutureBuilder<List<dynamic>>(
                           future: forecastFuture,
                           builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-                            if (snapshot.hasData) {
+                            if (snapshot.hasData && snapshot.data == savedData) {
                               return Text(
                                 forecastDate,
                                 textAlign: TextAlign.center,
@@ -155,7 +157,7 @@ class _forecastBlockState extends State {
                       child: FutureBuilder<List<dynamic>>(
                         future: forecastFuture,
                         builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-                          if (snapshot.hasData) {
+                          if (snapshot.hasData && snapshot.data == savedData) {
                             return Table(
                               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                               children: [
@@ -231,6 +233,7 @@ class _forecastBlockState extends State {
     setState(() {
       forecast = hourlyForecast;
       forecastDate = _setForecastDate(hourlyForecast);
+      savedData = hourlyForecast;
     });
     return hourlyForecast;
   }
@@ -253,10 +256,6 @@ class _forecastBlockState extends State {
       return ForecastLengthConstants.TWO_DAYS;
     else
       return ForecastLengthConstants.THREE_DAYS;
-  }
-
-  void showSpinner(){
-    forecastFuture = _getApiData();
   }
 }
 
