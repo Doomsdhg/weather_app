@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/api/weather_api.dart';
+import 'package:weather_app/services/api/weather_api.dart';
 
 class CityManagementDialog {
 
@@ -40,7 +40,10 @@ class _AutoCompleteInput extends StatelessWidget {
         inputCallback(value);
       },
       optionsBuilder: (TextEditingValue textEditingValue) async {
-        return await _findCities(textEditingValue.text);
+        if (textEditingValue.text.length > 0)
+          return await _findCities(textEditingValue.text);
+        else
+          return List.empty();
       }
     );
   }

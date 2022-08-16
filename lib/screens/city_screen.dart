@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/api/weather_api.dart';
+import 'package:weather_app/services/api/weather_api.dart';
 import 'package:weather_app/components/current_weather_block.dart';
 import 'package:weather_app/components/forecast_block.dart';
 
@@ -61,7 +61,14 @@ class _cityScreenState extends State {
                   )),
             );
           } else {
-            return CircularProgressIndicator();
+            return Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Center(
+                  child: CircularProgressIndicator()
+              ),
+            );
           }
         });
   }
