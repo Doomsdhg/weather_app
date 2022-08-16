@@ -8,19 +8,15 @@ class CityCard extends StatefulWidget {
 
   late String name;
 
-  late String dismissableKey;
-
   late int index;
 
   late Function dismissCallback;
 
   CityCard({
     required String name,
-    required String dismissableKey,
     required Function dismissCallback,
     required int index}){
     this.name = name;
-    this.dismissableKey = dismissableKey;
     this.index = index;
     this.dismissCallback = dismissCallback;
   }
@@ -29,8 +25,7 @@ class CityCard extends StatefulWidget {
   _CityCardState createState() => _CityCardState(
       cityName: name,
       index: index,
-      dismissCallback: dismissCallback,
-      dismissableKey: dismissableKey
+      dismissCallback: dismissCallback
   );
 }
 
@@ -44,14 +39,11 @@ class _CityCardState extends State {
 
   late int index;
 
-  late String dismissableKey;
-
   late Function dismissCallback;
 
-  _CityCardState({required String cityName, required String dismissableKey, required Function dismissCallback, required int index}){
+  _CityCardState({required String cityName, required Function dismissCallback, required int index}){
     this.cityName = cityName;
     this.index = index;
-    this.dismissableKey = dismissableKey;
     this.dismissCallback = dismissCallback;
   }
 
@@ -67,7 +59,7 @@ class _CityCardState extends State {
         builder: (context, AsyncSnapshot<dynamic> snapshot){
       if (snapshot.hasData) {
         return Dismissible(
-            key: ValueKey<String>(dismissableKey),
+            key: UniqueKey(),
             onDismissed: (dismissDirection) async {
               await dismissCallback(cityName, index);
             },
@@ -116,7 +108,15 @@ class _CityCardState extends State {
         );
       }
       else {
-        return CircularProgressIndicator();
+        return Card(
+          child: Container(
+            height: 80,
+            child: Align(
+            alignment: Alignment.topLeft,
+            child: CircularProgressIndicator(),
+            ),
+          )
+        );
       }
     });
   }

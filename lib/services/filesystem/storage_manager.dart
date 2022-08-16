@@ -24,7 +24,7 @@ class StorageManager {
     }
   }
 
-  Future<File> writeToEntity({
+  Future<File> writeAsEntity({
     required String entityName,
     required dynamic encodedData
   }) async {

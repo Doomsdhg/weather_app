@@ -15,8 +15,6 @@ class _mainScreenState extends State {
 
   late Future<List<String>> _citiesListFuture;
 
-  var now = new DateTime.now();
-
   @override
   void initState() {
     this._citiesListFuture = _getCitiesList();
@@ -45,7 +43,6 @@ class _mainScreenState extends State {
                   itemBuilder: (context, index) => CityCard(
                       name: citiesList[index],
                       index: index,
-                      dismissableKey: '${citiesList[index]}${now.millisecondsSinceEpoch}',
                       dismissCallback: _deleteCity
                   )
               ),
