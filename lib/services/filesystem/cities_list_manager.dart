@@ -16,7 +16,7 @@ class CitiesListManager {
   Future<void> addCityToList(String city) async {
     List<String> citiesList = await getCitiesList();
     citiesList.add(city);
-    await StorageManager().writeToEntity(
+    await StorageManager().writeAsEntity(
         entityName: DatabaseAccessors.CITIES_LIST,
         encodedData: getEncodedList(citiesList)
     );
@@ -28,7 +28,7 @@ class CitiesListManager {
         citiesList: citiesList,
         cityToDelete: cityName
     );
-    await StorageManager().writeToEntity(
+    await StorageManager().writeAsEntity(
         entityName: DatabaseAccessors.CITIES_LIST,
         encodedData: getEncodedList(citiesList)
     );
