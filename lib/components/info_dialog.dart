@@ -1,4 +1,9 @@
+import 'dart:io';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:weather_app/constants/constants.dart';
 
 class InfoDialog {
 
@@ -6,22 +11,54 @@ class InfoDialog {
     return showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text('Weather app'),
+        title: Text(
+          'Weather app',
+          style: TextStyle(
+            fontSize: FontConstants.MIDDLE_SIZE
+          ),
+        ),
         content: Wrap(
           alignment: WrapAlignment.start,
           children: [
             Text(
-                'Version: 0.1.0 '
+                'Version: 0.1.0 ',
+                style: TextStyle(
+                  fontSize: FontConstants.SMALL_SIZE
+                ),
             ),
             Text(
-                'Contact me: tohanknv@yandex.ru'
+                'Contact me: tohanknv@yandex.ru',
+                style: TextStyle(
+                  fontSize: FontConstants.SMALL_SIZE
+                ),
             ),
-            Text(
-                'Known bugs: '
+            RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                  text: 'Known bugs',
+                  style: new TextStyle(
+                    color: Colors.blue,
+                    fontSize: FontConstants.SMALL_SIZE
+                    ),
+                  recognizer: new TapGestureRecognizer()
+                    ..onTap = () => launchUrl(Uri.parse('https://github.com/Doomsdhg/weather_app#Known_bugs')),
+                  ),
+                  TextSpan(
+                  text: '\n',
+                  ),
+                  TextSpan(
+                  text: 'Fixed bugs',
+                  style: new TextStyle(
+                    color: Colors.blue,
+                    fontSize: FontConstants.SMALL_SIZE
+                    ),
+                  recognizer: new TapGestureRecognizer()
+                    ..onTap = () => launchUrl(Uri.parse('https://github.com/Doomsdhg/weather_app#Fixed_bugs')),
+                  ),
+                ],
+              ),
             ),
-            Text(
-                'Fixes bugs: '
-            )
           ],
         )
       ),
