@@ -40,10 +40,15 @@ class _mainScreenState extends State {
                   if (snapshot.hasData) {
                     return ListView.builder(
                       itemCount: citiesList.length,
-                      itemBuilder: (context, index) => CityCard(
-                          name: citiesList[index],
-                          index: index,
-                          dismissCallback: _deleteCity
+                      itemBuilder: (context, index) => Dismissible(
+                          key: UniqueKey(),
+                          onDismissed: (dismissDirection) async {
+                            await _deleteCity(index);
+                          },
+                          confirmDismiss: (dismissDirection) => _showConfirmDeletionDialog(context),
+                          child: CityCard(
+                              name: citiesList[index]
+                          )
                       )
                   );
                   } else {
@@ -63,12 +68,25 @@ class _mainScreenState extends State {
             );
   }
 
-  void rebuildAllChildren(BuildContext context) {
-    void rebuild(Element el) {
-      el.markNeedsBuild();
-      el.visitChildren(rebuild);
-    }
-    (context as Element).visitChildren(rebuild);
+  _showConfirmDeletionDialog(BuildContext dismissableContext){
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Confirm city deletion'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+        ],
+      ),
+    ).then((value) {
+      return value;
+    });
   }
 
   Future<List<String>> _getCitiesList() async {
@@ -79,8 +97,8 @@ class _mainScreenState extends State {
     return dbCities;
   }
 
-  Future<void> _deleteCity(String cityName, int index) async {
-    await CitiesListManager().deleteCity(cityName: cityName);
+  Future<void> _deleteCity(int index) async {
+    await CitiesListManager().deleteCity(cityName: citiesList[index]);
     setState(() {
       citiesList.removeAt(index);
     });

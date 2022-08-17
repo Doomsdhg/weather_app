@@ -8,24 +8,13 @@ class CityCard extends StatefulWidget {
 
   late String name;
 
-  late int index;
-
-  late Function dismissCallback;
-
-  CityCard({
-    required String name,
-    required Function dismissCallback,
-    required int index}){
+  CityCard({required String name}){
     this.name = name;
-    this.index = index;
-    this.dismissCallback = dismissCallback;
   }
 
   @override
   _CityCardState createState() => _CityCardState(
-      cityName: name,
-      index: index,
-      dismissCallback: dismissCallback
+      cityName: name
   );
 }
 
@@ -37,14 +26,8 @@ class _CityCardState extends State {
 
   late Future<double> temperatureFuture;
 
-  late int index;
-
-  late Function dismissCallback;
-
-  _CityCardState({required String cityName, required Function dismissCallback, required int index}){
+  _CityCardState({required String cityName}){
     this.cityName = cityName;
-    this.index = index;
-    this.dismissCallback = dismissCallback;
   }
 
   @override
@@ -58,13 +41,7 @@ class _CityCardState extends State {
         future: temperatureFuture,
         builder: (context, AsyncSnapshot<dynamic> snapshot){
       if (snapshot.hasData) {
-        return Dismissible(
-            key: UniqueKey(),
-            onDismissed: (dismissDirection) async {
-              await dismissCallback(cityName, index);
-            },
-            confirmDismiss: (dismissDirection) => _showConfirmationDialog(context),
-            child: GestureDetector(
+        return GestureDetector(
                 onTap: (){
                   Navigator.push(
                       context,
@@ -104,8 +81,7 @@ class _CityCardState extends State {
                       )
                   ),
                 )
-            )
-        );
+            );
       }
       else {
         return Card(
@@ -118,27 +94,6 @@ class _CityCardState extends State {
           )
         );
       }
-    });
-  }
-
-  _showConfirmationDialog(BuildContext dismissableContext){
-    return showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('Confirm city deletion'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-        ],
-      ),
-    ).then((value) async {
-      return value;
     });
   }
 

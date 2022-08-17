@@ -127,9 +127,14 @@ class _forecastBlockState extends State {
                     Container(
                       height: 70,
                       decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(width: 1, color: Colors.black)
-                        )
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            offset: Offset(0, 4), // changes position of shadow
+                          ),
+                        ],
                       ),
                       padding: EdgeInsets.all(10),
                       child: Center(
