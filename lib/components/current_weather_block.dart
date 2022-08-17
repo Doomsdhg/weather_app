@@ -34,7 +34,7 @@ class _currentWeatherBlockState extends State {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 20),
-      height: 170,
+      height: 220,
       child: FractionallySizedBox(
           widthFactor: 0.9,
           child: Container(

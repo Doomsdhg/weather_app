@@ -42,7 +42,6 @@ class _cityScreenState extends State {
                 title: Text(locationName),
               ),
               body: Container(
-                  margin: EdgeInsets.all(20),
                   constraints: BoxConstraints(minHeight: _getScreenHeight()),
                   child: FractionallySizedBox(
                     widthFactor: 1,

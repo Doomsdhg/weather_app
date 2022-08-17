@@ -116,25 +116,21 @@ class _forecastBlockState extends State {
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 3,
                         blurRadius: 7,
-                        offset: Offset(0, 5), // changes position of shadow
+                        offset: Offset(0, 5),
                       ),
                     ]
               ),
               child: FractionallySizedBox(
-                widthFactor: 0.8,
+                widthFactor: 0.9,
                 child: Column(
                   children: [
                     Container(
                       height: 70,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            offset: Offset(0, 4), // changes position of shadow
-                          ),
-                        ],
+                        border: Border(
+                          bottom: BorderSide(width: 3, color: Colors.grey.shade300),
+                        ),
                       ),
                       padding: EdgeInsets.all(10),
                       child: Center(
