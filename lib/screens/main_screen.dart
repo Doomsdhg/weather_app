@@ -11,9 +11,9 @@ class MainScreen extends StatefulWidget {
 }
 
 class _mainScreenState extends State {
-  late List<String> citiesList;
+  late List<City> citiesList;
 
-  late Future<List<String>> _citiesListFuture;
+  late Future<List<City>> _citiesListFuture;
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _mainScreenState extends State {
               )),
               body: FutureBuilder(
                 future: _citiesListFuture,
-                builder: (context, AsyncSnapshot<List<String>> snapshot) {
+                builder: (context, AsyncSnapshot<List<City>> snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(
                       itemCount: citiesList.length,
@@ -46,9 +46,7 @@ class _mainScreenState extends State {
                             await _deleteCity(index);
                           },
                           confirmDismiss: (dismissDirection) => _showConfirmDeletionDialog(context),
-                          child: CityCard(
-                              name: citiesList[index]
-                          )
+                          child: CityCard(citiesList[index])
                       )
                   );
                   } else {
@@ -60,7 +58,9 @@ class _mainScreenState extends State {
                 onPressed: () =>
                     CityManagementDialog().build(context).then((value) async {
                       await CitiesListManager().addCityToList(value);
-                      await _getCitiesList();
+                      setState(() {
+                        citiesList.add(City(name: value));
+                      });
                     }),
                 tooltip: 'Add city',
                 child: const Icon(Icons.add),
@@ -89,16 +89,24 @@ class _mainScreenState extends State {
     });
   }
 
-  Future<List<String>> _getCitiesList() async {
-    final List<String> dbCities = await CitiesListManager().getCitiesList();
+  Future<List<City>> _getCitiesList() async {
+    final List<String> dbCitiesNames = await CitiesListManager().getCitiesList();
+    final List<City> citiesDataList = _transformsNamesToCities(dbCitiesNames);
     setState(() {
-      this.citiesList = dbCities;
+      this.citiesList = citiesDataList;
     });
-    return dbCities;
+    return citiesDataList;
+  }
+
+  List<City> _transformsNamesToCities(List<String> citiesNames){
+    return citiesNames
+    .map((cityName) => City(name: cityName))
+    .toList()
+    .cast<City>();
   }
 
   Future<void> _deleteCity(int index) async {
-    await CitiesListManager().deleteCity(cityName: citiesList[index]);
+    await CitiesListManager().deleteCity(cityName: citiesList[index].name);
     setState(() {
       citiesList.removeAt(index);
     });
