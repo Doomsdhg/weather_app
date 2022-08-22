@@ -55,7 +55,7 @@ class TemperatureConstants {
 class FontConstants {
   static double SMALL_SIZE = 19;
   static double MIDDLE_SIZE = 25;
-  static double LARGE_SIZE = 33;
+  static double LARGE_SIZE = 30;
 }
 
 class ForecastLengthConstants {

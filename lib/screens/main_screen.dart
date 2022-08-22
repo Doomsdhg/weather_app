@@ -38,17 +38,20 @@ class _mainScreenState extends State {
                 future: _citiesListFuture,
                 builder: (context, AsyncSnapshot<List<City>> snapshot) {
                   if (snapshot.hasData) {
-                    return ListView.builder(
-                      itemCount: citiesList.length,
-                      itemBuilder: (context, index) => Dismissible(
-                          key: UniqueKey(),
-                          onDismissed: (dismissDirection) async {
-                            await _deleteCity(index);
-                          },
-                          confirmDismiss: (dismissDirection) => _showConfirmDeletionDialog(context),
-                          child: CityCard(citiesList[index])
-                      )
-                  );
+                    return RefreshIndicator(
+                      child: ListView.builder(
+                        itemCount: citiesList.length,
+                        itemBuilder: (context, index) => Dismissible(
+                            key: UniqueKey(),
+                            onDismissed: (dismissDirection) async {
+                              await _deleteCity(index);
+                            },
+                            confirmDismiss: (dismissDirection) => _showConfirmDeletionDialog(context),
+                            child: CityCard(citiesList[index])
+                        )
+                      ), 
+                      onRefresh: _refreshCititesList
+                    );
                   } else {
                    return CircularProgressIndicator();
                   }
@@ -66,6 +69,10 @@ class _mainScreenState extends State {
                 child: const Icon(Icons.add),
               ),
             );
+  }
+
+  Future<void> _refreshCititesList()async{
+    await _getCitiesList();
   }
 
   _showConfirmDeletionDialog(BuildContext dismissableContext){

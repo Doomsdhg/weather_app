@@ -36,25 +36,13 @@ class InfoDialog {
               text: TextSpan(
                 children: [
                   TextSpan(
-                  text: 'Known bugs',
+                  text: 'About',
                   style: new TextStyle(
                     color: Colors.blue,
                     fontSize: FontConstants.SMALL_SIZE
                     ),
                   recognizer: new TapGestureRecognizer()
-                    ..onTap = () => launchUrl(Uri.parse('https://github.com/Doomsdhg/weather_app#Known_bugs')),
-                  ),
-                  TextSpan(
-                  text: '\n',
-                  ),
-                  TextSpan(
-                  text: 'Fixed bugs',
-                  style: new TextStyle(
-                    color: Colors.blue,
-                    fontSize: FontConstants.SMALL_SIZE
-                    ),
-                  recognizer: new TapGestureRecognizer()
-                    ..onTap = () => launchUrl(Uri.parse('https://github.com/Doomsdhg/weather_app#Fixed_bugs')),
+                    ..onTap = () => launchUrl(Uri.parse('https://github.com/Doomsdhg/weather_app#weather_app')),
                   ),
                 ],
               ),
