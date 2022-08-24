@@ -22,7 +22,7 @@ To see extended information about weather in any of added cities, simply tap on 
 
 - In city_management-dialog add button should be disabled if no city chosen yet.
 
-## V0.1.1
+## V0.1.0 -> V0.1.1
 
 ### bugs
 
