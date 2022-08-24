@@ -9,16 +9,31 @@ Add cities to the main page to observe current weather right in the list.
 To see extended information about weather in any of added cities, simply tap on the city.
 
 
-## Known_bugs
+## V0.1.0
+
+### bugs
 
 
+- Adding or removing city on main screen refreshes whole list.
 
-## Fixed_bugs
+- Dropdown out of borders in city_management-dialog.
 
-1. Adding or removing city on main screen refreshes whole list.
+- Loading lag after pressing today/+1/+2 buttons in forecast_block.
 
-2. Dropdown out of borders in city_management-dialog.
+- In city_management-dialog add button should be disabled if no city chosen yet.
 
-3. Loading lag after pressing today/+1/+2 buttons in forecast_block.
+## V0.1.1
 
-4. In city_management-dialog add button should be disabled if no city chosen yet. 
+### bugs
+
+- ~~Adding or removing city on main screen refreshes whole list.~~
+
+- ~~Dropdown out of borders in city_management-dialog.~~
+
+- ~~Loading lag after pressing today/+1/+2 buttons in forecast_block.~~
+
+- ~~In city_management-dialog add button should be disabled if no city chosen yet.~~
+
+- You can add one city more than once.
+
+
