@@ -30,6 +30,8 @@ class _forecastBlockState extends State {
 
   late dynamic savedData;
 
+  bool displaySpinner = true;
+
   _forecastBlockState({required String cityName}) {
     this.cityName = cityName;
   }
@@ -37,7 +39,7 @@ class _forecastBlockState extends State {
   @override
   void initState() {
     buttonsState.initState();
-    this.forecastFuture = _getApiData();
+    this.forecastFuture = _getForecast();
     super.initState();
   }
 
@@ -58,7 +60,10 @@ class _forecastBlockState extends State {
                     onPressed: () {
                       buttonsState.refreshState();
                       buttonsState.today = true;
-                      forecastFuture = _getApiData();
+                      setState(() {
+                        displaySpinner = true;
+                      });
+                      forecastFuture = _getForecast();
                     },
                     child: Container(
                         margin: EdgeInsets.all(10),
@@ -75,7 +80,10 @@ class _forecastBlockState extends State {
                     onPressed: () {
                       buttonsState.refreshState();
                       buttonsState.tomorrow = true;
-                      forecastFuture = _getApiData();
+                      setState(() {
+                        displaySpinner = true;
+                      });
+                      forecastFuture = _getForecast();
                     },
                     child: Container(
                         margin: EdgeInsets.all(10),
@@ -92,7 +100,10 @@ class _forecastBlockState extends State {
                     onPressed: () {
                       buttonsState.refreshState();
                       buttonsState.dayAfterTomorrow = true;
-                      forecastFuture = _getApiData();
+                      setState(() {
+                        displaySpinner = true;
+                      });
+                      forecastFuture = _getForecast();
                     },
                     child: Container(
                         margin: EdgeInsets.all(10),
@@ -137,7 +148,7 @@ class _forecastBlockState extends State {
                         child: FutureBuilder<List<dynamic>>(
                           future: forecastFuture,
                           builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-                            if (snapshot.hasData && snapshot.data == savedData) {
+                            if (!displaySpinner) {
                               return Text(
                                 forecastDate,
                                 textAlign: TextAlign.center,
@@ -159,7 +170,7 @@ class _forecastBlockState extends State {
                       child: FutureBuilder<List<dynamic>>(
                         future: forecastFuture,
                         builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-                          if (snapshot.hasData && snapshot.data == savedData) {
+                          if (!displaySpinner) {
                             return Table(
                               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                               children: [
@@ -229,10 +240,11 @@ class _forecastBlockState extends State {
     return MaterialStateProperty.all<Color>(buttonColor);
   }
 
-  Future<List<dynamic>> _getApiData() async {
+  Future<List<dynamic>> _getForecast() async {
     var response = await WeatherApi().getForecast(city: cityName, days: _getForecastLength());
     List<dynamic> hourlyForecast = _filterPassedHours(response);
     setState(() {
+      displaySpinner = false;
       forecast = hourlyForecast;
       forecastDate = _setForecastDate(hourlyForecast);
       savedData = hourlyForecast;
@@ -241,7 +253,7 @@ class _forecastBlockState extends State {
   }
 
   List<dynamic> _filterPassedHours(dynamic response) {
-    final localCurrentTime = DateTime.parse(response[LocationAcessors.LOCATION][LocationAcessors.LOCAL_TIME].toString());
+    final DateTime localCurrentTime = _correctTimeFormat(response);
     List<dynamic> dailyForecast = response[WeatherAccessors.FORECAST][WeatherAccessors.FORECAST_DAY];
     List<dynamic> hourlyForecast = dailyForecast.last[ForecastAccessors.HOUR];
     final filteredHourlyForecast = hourlyForecast.where((forecastObject) {
@@ -249,6 +261,15 @@ class _forecastBlockState extends State {
       return forecastTime.compareTo(localCurrentTime) > 0;
     }).toList();
     return filteredHourlyForecast;
+  }
+
+  DateTime _correctTimeFormat(dynamic response){
+    String dateTime = response[LocationAcessors.LOCATION][LocationAcessors.LOCAL_TIME].toString();
+    String time = dateTime.substring(dateTime.indexOf(" ") + 1);
+    if (time.length == 4) {
+      dateTime = dateTime.replaceFirst(time, "0$time");
+    }
+    return DateTime.parse(dateTime);
   }
 
   String _getForecastLength() {
