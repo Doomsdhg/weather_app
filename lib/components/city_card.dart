@@ -3,73 +3,23 @@ import 'package:weather_app/constants/constants.dart';
 import 'package:weather_app/screens/city_screen.dart';
 import 'package:weather_app/services/api/weather_api.dart';
 
+class CityCard extends StatelessWidget {
 
-class CityCard extends StatefulWidget {
+  late City cityData;
 
-  late String name;
-
-  late int index;
-
-  late Function dismissCallback;
-
-  CityCard({
-    required String name,
-    required Function dismissCallback,
-    required int index}){
-    this.name = name;
-    this.index = index;
-    this.dismissCallback = dismissCallback;
-  }
-
-  @override
-  _CityCardState createState() => _CityCardState(
-      cityName: name,
-      index: index,
-      dismissCallback: dismissCallback
-  );
-}
-
-class _CityCardState extends State {
-
-  late String cityName;
-
-  late String temperature;
-
-  late Future<double> temperatureFuture;
-
-  late int index;
-
-  late Function dismissCallback;
-
-  _CityCardState({required String cityName, required Function dismissCallback, required int index}){
-    this.cityName = cityName;
-    this.index = index;
-    this.dismissCallback = dismissCallback;
-  }
-
-  @override
-  void initState() {
-    this.temperatureFuture = _getCurrentTemperature();
-    super.initState();
-  }
+  CityCard(this.cityData);
 
   Widget build(BuildContext context){
     return FutureBuilder(
-        future: temperatureFuture,
+        future: cityData.getCurrentTemperature(),
         builder: (context, AsyncSnapshot<dynamic> snapshot){
-      if (snapshot.hasData) {
-        return Dismissible(
-            key: UniqueKey(),
-            onDismissed: (dismissDirection) async {
-              await dismissCallback(cityName, index);
-            },
-            confirmDismiss: (dismissDirection) => _showConfirmationDialog(context),
-            child: GestureDetector(
+      if (cityData.temperature != null) {
+        return GestureDetector(
                 onTap: (){
                   Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context){
-                        return CityScreen(cityName: cityName);
+                        return CityScreen(cityName: cityData.name);
                       })
                   );
                 },
@@ -81,7 +31,7 @@ class _CityCardState extends State {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                '$cityName',
+                                '${cityData.name}',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: FontConstants.MIDDLE_SIZE
@@ -91,7 +41,7 @@ class _CityCardState extends State {
                             Align(
                                 alignment: Alignment.centerRight,
                                 child: Text(
-                                  '${temperature}${TemperatureConstants.CELCIUS}',
+                                  '${cityData.temperature}${TemperatureConstants.CELCIUS}',
                                   style: TextStyle(
                                       fontSize: FontConstants.LARGE_SIZE
                                   ),
@@ -104,8 +54,7 @@ class _CityCardState extends State {
                       )
                   ),
                 )
-            )
-        );
+            );
       }
       else {
         return Card(
@@ -120,33 +69,19 @@ class _CityCardState extends State {
       }
     });
   }
+}
 
-  _showConfirmationDialog(BuildContext dismissableContext){
-    return showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('Confirm city deletion'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-        ],
-      ),
-    ).then((value) async {
-      return value;
-    });
-  }
+class City {
+   late String name;
+   double? temperature;
 
-  Future<double> _getCurrentTemperature() async {
-    final double currentTemperature = await WeatherApi().getCurrentTemperature(cityName);
-    setState((){
-      temperature = currentTemperature.toString();
-    });
-    return currentTemperature;
-  }
+   City({required String name}){
+    this.name = name;
+   }
+
+   Future<double> getCurrentTemperature() async {
+     double currentTemperature = await WeatherApi().getCurrentTemperature(name);
+     temperature = currentTemperature;
+     return currentTemperature;
+   }
 }

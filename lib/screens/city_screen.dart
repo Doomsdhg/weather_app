@@ -42,7 +42,6 @@ class _cityScreenState extends State {
                 title: Text(locationName),
               ),
               body: Container(
-                  margin: EdgeInsets.all(20),
                   constraints: BoxConstraints(minHeight: _getScreenHeight()),
                   child: FractionallySizedBox(
                     widthFactor: 1,
@@ -53,7 +52,7 @@ class _cityScreenState extends State {
                             children: [
                               CurrentWeatherBlock(cityName: cityName),
                               ForecastBlock(
-                                cityName: cityName,
+                                cityName: cityName
                               )
                             ],
                           ),
